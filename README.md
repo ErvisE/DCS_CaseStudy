@@ -10,7 +10,7 @@ The goal is to show how I would structure and implement a robust, production-rea
 
 ## 2. High-Level Architecture
 
-![Current Architecture](./images/architecture.png)
+![Current Architecture](./images/Architecture.png)
 
 Core technologies:
 
@@ -22,7 +22,7 @@ Core technologies:
 
 ## 3. Storage Strategy – Bronze / Silver / Gold
 
-![Data Layers – Bronze / Silver / Gold](./images/layers.png)
+![Data Layers – Bronze / Silver / Gold](./images/Layers.png)
 
 - **Bronze (Raw):** Full-fidelity JSON from Twitter API (Snowflake VARIANT or object storage)
 - **Silver (Processed):** Parsed, cleaned, normalized models in dbt
@@ -30,7 +30,7 @@ Core technologies:
 
 ## 4. Orchestration – Airflow
 
-![Airflow DAG](./images/airflow_dag.png)
+![Airflow DAG](./images/Airflow_dag.png)
 
 The Airflow DAG conceptually:
 
@@ -43,7 +43,7 @@ See `airflow/dags/tweet_pipeline_dag.py` for a simplified example DAG structure.
 
 ## 5. Dream Architecture (Future, High Scale)
 
-![Dream Architecture – Future High Scale](./images/dream_architecture.png)
+![Dream Architecture – Future High Scale](./images/Dream_Architecture.png)
 
 In a future scenario with much higher volume (streaming charging events, IoT, etc.), a streaming and data lake layer (Kafka/PubSub/Kinesis + Spark/Flink + Parquet) can complement Snowflake and dbt.
 
@@ -73,10 +73,10 @@ chargenow-pipeline/
 │   └── tests/
 │
 ├── images/
-│   ├── architecture.png
-│   ├── layers.png
-│   ├── airflow_dag.png
-│   └── dream_architecture.png
+│   ├── Architecture.png
+│   ├── Layers.png
+│   ├── Airflow_Dag.png
+│   └── Dream_Architecture.png
 │
 └── README.md
 ```
