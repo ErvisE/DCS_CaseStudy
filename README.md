@@ -1,3 +1,5 @@
+![CI](https://github.com/ErvisE/DCS_CaseStudy/actions/workflows/ci.yml/badge.svg)
+
 # ChargeNow Tweet Pipeline – Data Engineering Case Study
 
 This repository contains the **full case study implementation**, aligned with the final PDF version including all four diagrams placed in their relevant sections.
