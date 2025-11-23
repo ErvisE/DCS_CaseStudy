@@ -10,7 +10,7 @@ The goal is to show how I would structure and implement a robust, production-rea
 
 ## 2. High-Level Architecture
 
-![Current Architecture](./images/architecture.png)
+![Current Architecture](.DCS_CaseStudy/images/architecture.png)
 
 Core technologies:
 
@@ -22,7 +22,7 @@ Core technologies:
 
 ## 3. Storage Strategy – Bronze / Silver / Gold
 
-![Data Layers – Bronze / Silver / Gold](./images/layers.png)
+![Data Layers – Bronze / Silver / Gold](.DCS_CaseStudy/images/layers.png)
 
 - **Bronze (Raw):** Full-fidelity JSON from Twitter API (Snowflake VARIANT or object storage)
 - **Silver (Processed):** Parsed, cleaned, normalized models in dbt
@@ -30,7 +30,7 @@ Core technologies:
 
 ## 4. Orchestration – Airflow
 
-![Airflow DAG](./images/airflow_dag.png)
+![Airflow DAG](.DCS_CaseStudy/images/airflow_dag.png)
 
 The Airflow DAG conceptually:
 
@@ -43,7 +43,7 @@ See `airflow/dags/tweet_pipeline_dag.py` for a simplified example DAG structure.
 
 ## 5. Dream Architecture (Future, High Scale)
 
-![Dream Architecture – Future High Scale](./images/dream_architecture.png)
+![Dream Architecture – Future High Scale](.DCS_CaseStudy/images/dream_architecture.png)
 
 In a future scenario with much higher volume (streaming charging events, IoT, etc.), a streaming and data lake layer (Kafka/PubSub/Kinesis + Spark/Flink + Parquet) can complement Snowflake and dbt.
 
@@ -80,70 +80,3 @@ chargenow-pipeline/
 │
 └── README.md
 ```
-
-## 7. How to Run Locally (Conceptual)
-
-This repository is **conceptual** and meant for discussion; however, a realistic local setup would look like this:
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/<your-username>/chargenow-pipeline.git
-   cd chargenow-pipeline
-   ```
-
-2. **Create and activate a virtual environment**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate   # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install Python dependencies (example)**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Set environment variables for Twitter and Snowflake**
-   ```bash
-   export TWITTER_BEARER_TOKEN="..."
-   export SNOWFLAKE_ACCOUNT="..."
-   export SNOWFLAKE_USER="..."
-   export SNOWFLAKE_PASSWORD="..."
-   export SNOWFLAKE_WAREHOUSE="..."
-   export SNOWFLAKE_DATABASE="..."
-   export SNOWFLAKE_SCHEMA="..."
-   ```
-
-5. **Run the extraction script (standalone)**
-   ```bash
-   python src/extract/fetch_tweets.py
-   ```
-
-6. **Airflow**
-   - Place the DAG file under your Airflow `dags/` folder.
-   - Configure an Airflow connection/variables for credentials.
-   - Trigger the DAG from the Airflow UI.
-
-7. **dbt**
-   - Place `dbt/` under a dbt project structure.
-   - Configure `profiles.yml` for Snowflake.
-   - Run:
-     ```bash
-     dbt run
-     dbt test
-     ```
-
-> Note: In this case study, focus is on **architecture and design**, not on providing fully runnable production code. The structure and placeholders show how the project would be organized in a real implementation.
-
-## 8. Technologies
-
-- Python 3.x
-- Airflow
-- Snowflake
-- dbt
-- PostgreSQL (optional)
-- Git / GitHub
-
-## 9. License
-
-This repository is intended as an interview case study and reference implementation.  
-Use it as inspiration or reference for your own data engineering designs.
