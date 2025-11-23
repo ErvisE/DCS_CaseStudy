@@ -32,7 +32,7 @@ Core technologies:
 
 ## 4. Orchestration – Airflow
 
-![Airflow DAG](./images/Airflow_dag.png)
+![Airflow DAG](./images/Airflow_Dag.png)
 
 The Airflow DAG conceptually:
 
