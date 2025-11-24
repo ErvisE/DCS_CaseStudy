@@ -1,51 +1,60 @@
 """
-Simplified Airflow DAG for the ChargeNow tweet pipeline.
+ChargeNow Case Study – Airflow DAG
 
-This is a conceptual DAG skeleton for discussion, not a fully runnable DAG.
+This DAG demonstrates:
+- Orchestration of tweet extraction
+- Retry logic for robustness
+- Parameterized date windows (support for reprocessing past intervals)
+- dbt transformation step placeholder
 """
-from datetime import datetime, timedelta
 
-try:
-    from airflow import DAG
-    from airflow.operators.python import PythonOperator
-except ImportError:
-    # Airflow is not installed in this environment. This file is for illustration only.
-    DAG = object
-    PythonOperator = object
+from datetime import datetime, timedelta
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+
+from src.extract.fetch_tweets import fetch_tweets
+
 
 def extract_tweets(**context):
-    # Placeholder implementation
-    print("Extracting tweets for #ChargeNow (conceptual).")
+    start = context["data_interval_start"].isoformat()
+    end = context["data_interval_end"].isoformat()
+
+    print(f"[INFO] Extracting tweets from {start} → {end}")
+    data = fetch_tweets(start, end)
+
+    # save raw JSON to disk/S3/Snowflake stage - placeholder
+    print(f"[INFO] Raw extraction complete. Records: {len(data.get('data', []))}")
+
 
 def run_dbt_models(**context):
-    # Placeholder implementation
-    print("Running dbt models (conceptual).")
+    print("[INFO] Running dbt models (mock placeholder).")
+    # dbt run --models stg_* silver_* gold_*  (placeholder)
+
 
 default_args = {
     "owner": "data-engineering",
     "retries": 3,
     "retry_delay": timedelta(minutes=5),
+    "email_on_failure": False,
 }
 
-if isinstance(DAG, type):
-    with DAG(
-        dag_id="chargenow_tweet_pipeline",
-        start_date=datetime(2024, 1, 1),
-        schedule_interval="@hourly",
-        catchup=False,
-        default_args=default_args,
-    ) as dag:
+with DAG(
+    dag_id="chargenow_tweet_pipeline",
+    start_date=datetime(2024, 1, 1),
+    schedule_interval="@hourly",
+    catchup=False,
+    default_args=default_args,
+    description="ChargeNow ELT pipeline for #ChargeNow tweets",
+) as dag:
 
-        extract = PythonOperator(
-            task_id="extract_tweets",
-            python_callable=extract_tweets,
-        )
+    extract = PythonOperator(
+        task_id="extract_tweets",
+        python_callable=extract_tweets,
+    )
 
-        dbt_run = PythonOperator(
-            task_id="run_dbt_models",
-            python_callable=run_dbt_models,
-        )
+    dbt_run = PythonOperator(
+        task_id="run_dbt_models",
+        python_callable=run_dbt_models,
+    )
 
-        extract >> dbt_run
-else:
-    dag = None
+    extract >> dbt_run
